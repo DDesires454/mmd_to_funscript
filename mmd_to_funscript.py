@@ -14,9 +14,9 @@ import math
 import os
 
 TARGET_BONES = [
-    "센터", "センター", "Center", "center", 
-    "하반신", "下반신", "Lower Body", "lower body", 
-    "허리", "Waist", "waist"
+    "센터", "センター", "Center", "center",
+    "하반신", "下半身", "Lower Body", "lower body",
+    "허리", "腰", "Waist", "waist", "Hips", "hips",
 ]
 
 class MMD_FUNSCRIPT_Properties(bpy.types.PropertyGroup):
