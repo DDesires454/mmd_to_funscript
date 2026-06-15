@@ -83,7 +83,7 @@ class MMD_FUNSCRIPT_Properties(bpy.types.PropertyGroup):
     # 축별 90도 초과 시 반전(Ping-Pong)
     fold_pitch: bpy.props.BoolProperty(name="Pitch 90도 반전", default=False)
     fold_roll: bpy.props.BoolProperty(name="Roll 90도 반전", default=False)
-    fold_twist: bpy.props.BoolProperty(name="Twist 90도 반전", default=False)
+    fold_twist: bpy.props.BoolProperty(name="Twist 90도 반전", default=True)
     
     # 뒤돌기 보정 (90도 반전 하위 종속 옵션)
     shift_back_pitch: bpy.props.BoolProperty(
@@ -99,7 +99,7 @@ class MMD_FUNSCRIPT_Properties(bpy.types.PropertyGroup):
     shift_back_twist: bpy.props.BoolProperty(
         name="Twist 뒤돌기 보정",
         description="180도 경계면 및 복귀 시의 0도 경계면 튐 현상을 양방향으로 정밀 보정합니다",
-        default=False
+        default=True
     )
     
     # 뒤돌기 판단 임계 프레임 변동 각도
