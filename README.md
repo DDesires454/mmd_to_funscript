@@ -17,7 +17,7 @@ While this addon is free and open-source, it is subject to the following develop
 * **비상업적 이용 한정**: 오직 개인적인 연구, 학습, 비상업적 목적의 취미 활동 및 무료 공유 목적으로만 사용할 수 있습니다.
 * **Personal & Non-Profit Only**: This tool is strictly for personal use, educational purposes, non-profit hobbies, and free distribution.
 
-* **수정 및 재배포**: 코드를 수정하거나 재배포할 경우 원작자(Gemini/사용자 이름)를 반드시 명시해야 하며, 수정본 역시 동일하게 상업적 이용이 금지됩니다.
+* **수정 및 재배포**: 코드를 수정하거나 재배포할 경우 원작자(사용자 이름)를 반드시 명시해야 하며, 수정본 역시 동일하게 상업적 이용이 금지됩니다.
 * **Modification & Redistribution**: If you modify or redistribute this code, you must credit the original author, and the modified version will inherit these same non-commercial restrictions.
 
 본 프로그램을 다운로드하고 사용하는 것은 위 약관에 동의한 것으로 간주됩니다. 이를 위반 시 저작권법 및 관련 법령에 의거하여 불이익을 받을 수 있습니다.
