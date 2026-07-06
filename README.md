@@ -1,4 +1,4 @@
-# mmd_to_funscript (Smart Dynamic v4.9.5)
+# mmd_to_funscript
 Blender Addon
 
 blender_mmd_tools  
