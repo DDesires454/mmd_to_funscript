@@ -1,5 +1,5 @@
 # mmd_to_funscript
-Blender Addon — **v5.2.0**
+Blender Addon — **v5.3.0**
 
 blender_mmd_tools
 https://github.com/MMD-Blender/blender_mmd_tools
@@ -21,6 +21,27 @@ While this addon is free and open-source, it is subject to the following develop
 * **Modification & Redistribution**: If you modify or redistribute this code, you must credit the original author, and the modified version will inherit these same non-commercial restrictions.
 
 ---
+
+## 🆕 v5.3.0 업데이트 요약
+
+* **Twist(비틀림) 연산 완전 재작성 — 본의 길이 방향 기준 보정**: 기존에는 카메라/월드
+  기준의 고정된 축으로 Twist를 계산해, 캐릭터가 눕거나 크게 회전하면 값이 부정확하거나
+  불연속적으로 튀는 경우가 있었습니다. v5.3.0부터는 본의 길이 방향(로컬 Y축) 자체를
+  기준으로 삼아 계산합니다.
+  * **LOCAL 모드**: 쿼터니언 기반 **Swing-Twist Decomposition**을 도입해, 본의 로컬
+    Y축을 회전축으로 두고 다른 축의 휘어짐(Swing) 성분을 제거한 순수 Twist 성분만
+    고립해 추출합니다.
+  * **GLOBAL 모드**: 카메라 기준 우측 벡터를 본의 현재 길이 방향에 수직인 평면 위로
+    매 프레임 동적으로 투영(Dynamic Projection Reference Frame)해, 캐릭터가 눕거나
+    회전해도 본의 길이 방향과 일관되게 정렬된 기준축으로 Twist를 계산합니다. 투영이
+    거의 실패하는 특이 각도(투영 벡터 길이가 0에 가까운 경우)에는 화면 위쪽 축을
+    대신 투영해 회피합니다.
+* **중점 반동 인터셉트 감지 시점 보완**: 회전(Pitch/Roll) 동적 변형의 선행(역행 전)
+  스캔 도중에도 값이 중점(midpoint)을 넘어서는 순간을 즉시 감지하도록 수정되었습니다.
+  기존에는 이 감지가 스캔이 끝난 뒤에만 이뤄져, 특정 구간에서 보정이 한 프레임 늦게
+  걸리는 경우가 있었습니다. (ROT_UP/ROT_DOWN 두 스캔 방향 모두 적용)
+* 사용자가 직접 조정하는 옵션 항목(프로퍼티) 자체는 v5.2.0과 동일합니다 — 이번 버전은
+  연산 로직 정확도 개선이 중심이며, UI/CLI에 새로 추가된 항목은 없습니다.
 
 ## 🆕 v5.2.0 업데이트 요약
 
@@ -146,15 +167,15 @@ idea by miku
 ### 4. 고성능 파이썬 엔진 (Standalone Engine)
 
 * **블렌더 불필요:** 블렌더나 MMD 관련 애드온 없이 오직 파이썬 환경만으로 독립 실행됩니다.
-* **원본 알고리즘 계승:** `funscript_core.py`를 통해 원본 애드온의 핵심 연산 로직을 그대로 사용하므로, 검증된 변환 품질을 제공합니다.
+* **원본 알고리즘 계승:** 별도의 사전 추출 파일 없이, 실행할 때마다 같은 폴더의 `mmd_to_funscript*.py`(Blender 애드온) 원본 코드에서 연산 블록을 그 자리에서 직접 읽어(AST 파싱, sha256 해시로 추출 결과 확인) 사용합니다. 애드온 파일을 교체하면 다음 실행부터 새 버전의 로직이 자동으로 반영됩니다.
 * **음악 싱크 최적화:** VMD 0프레임을 정확히 0ms로 계산하여, 기존 블렌더 임포트 시 발생하던 타이밍 밀림 현상이 없습니다.
 
 ---
 
 ### 💡 활용 팁 (Pro-tips)
 
-* **회전 전용 모드:** 스트로크(상하 이동) 없이 회전 값만 추출하고 싶다면 `make_bat.py` GUI에서 해당 옵션을 끄거나 `--rotation-only` 옵션을 사용하세요.
-* **디버그 모드:** 변환 결과가 의도와 다르다면 `--debug` 옵션을 통해 funscript 대신 연산 디버그 로그를 생성하여 원인을 파악할 수 있습니다.
+* **회전 전용 모드:** 스트로크(상하 이동) 없이 회전 값만 추출하고 싶다면 `make_bat.py` GUI에서 Stroke 활성화를 끄거나, 명령줄에서 `--no-export-stroke` 옵션을 사용하세요.
+* **디버그 모드:** 변환 결과가 의도와 다르다면 `--debug` 옵션을 통해 funscript 대신 연산 디버그 로그(`.debug.txt`)를 생성하여 원인을 파악할 수 있습니다.
 * **옵션을 다시 바꾸고 싶다면:** `make_bat.py`를 다시 실행하면 GUI가 새로 열리며, 이때 생성되는 `.bat` 파일이 이전 설정을 덮어씁니다.
 
 ---
@@ -163,7 +184,7 @@ idea by miku
 
 | 구성 요소 | 이전 버전 | 현재 버전 |
 |---|---|---|
-| `mmd_to_funscript.py` (Blender Add-on) | v5.0.0 | **v5.2.0** |
-| `make_bat.py` (vmd2funscript 옵션 도구) | v5.0.0 (Tkinter GUI, 애드온 자동 연동) | **v5.2.0 (애드온 옵션 변경사항 자동 반영)** |
+| `mmd_to_funscript.py` (Blender Add-on) | v5.2.0 | **v5.3.0** |
+| `make_bat.py` / `vmd2funscript.py` (독립 실행 도구) | v5.2.0 옵션 스키마 대응 | **변경 없음 — 애드온의 연산 로직만 바뀐 버전이라 옵션 항목은 v5.2.0과 동일하며, 실행 시점 자동 연동이라 별도 대응 불필요** |
 
 자세한 변경 이력은 [`CHANGELOG.md`](./CHANGELOG.md)를 확인하세요.
