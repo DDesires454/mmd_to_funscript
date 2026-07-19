@@ -1,5 +1,5 @@
 # mmd_to_funscript
-Blender Addon — **v5.0.0**
+Blender Addon — **v5.2.0**
 
 blender_mmd_tools
 https://github.com/MMD-Blender/blender_mmd_tools
@@ -22,7 +22,14 @@ While this addon is free and open-source, it is subject to the following develop
 
 ---
 
-## 🆕 v5.0.0 업데이트 요약
+## 🆕 v5.2.0 업데이트 요약
+
+* **Pitch/Roll 각도 연산 정확도 개선**: 두 축을 각각 독립적으로 계산하던 방식에서, 하나의 원뿔각(경사각)과 방위각을 구해 원형(Circular)으로 분배하는 방식으로 교체했습니다. 특정 회전 구간에서 Pitch/Roll 값의 방향이 순간적으로 반대로 튀던 현상이 해결되고, 전 구간에서 끊김 없이 자연스럽게 이어집니다.
+* **뼈 자동 감지 범위 확장**: 좌/우 판별 키워드에 일본어 한자 `左`(왼쪽) / `右`(오른쪽)가 추가되어, 해당 표기를 쓰는 모델에서도 AUTO/FILTERED 모드의 뼈 자동 인식이 정확해졌습니다.
+* **Pitch/Roll 반전 기본값 조정**: `90도 반전` 옵션의 기본값이 `켜짐 → 꺼짐`으로 변경되었습니다. (v5.2.0의 각도 연산 개선으로 더 이상 기본적으로 필요하지 않아, 오히려 값을 왜곡시키는 경우가 있었습니다.) 리셋 버튼을 눌러도 동일하게 초기화됩니다.
+* **모드 전환 시 자동 값 변경 로직 제거**: 기존에는 추출 방식(Global/Local)을 바꾸면 `90도 반전`·`뒤돌기 보정` 값이 모드에 맞춰 자동으로 재설정됐지만, 이제는 사용자가 직접 지정한 값이 모드를 바꿔도 그대로 유지됩니다.
+
+이전 v5.0.0 업데이트 요약도 함께 참고하세요.
 
 * **글로벌 투영 가상 카메라**: Global(세계 기준) 모드에서 "바라보는 방향"과 "화면 위쪽 방향"을 직접 골라, 원하는 시점 기준으로 Pitch/Roll/Stroke/기립 판별을 계산할 수 있습니다.
 * **Pitch/Roll 동적 변형 지원**: 그동안 Stroke에만 있던 실시간 극점 재계산·"중점 반동 인터셉트" 로직이 회전축(Pitch, Roll)까지 확장되었습니다.
@@ -156,7 +163,7 @@ idea by miku
 
 | 구성 요소 | 이전 버전 | 현재 버전 |
 |---|---|---|
-| `mmd_to_funscript.py` (Blender Add-on) | v4.9.7 | **v5.0.0** |
-| `make_bat.py` (vmd2funscript 옵션 도구) | 콘솔 CLI | **v5.0.0 (Tkinter GUI, 애드온 자동 연동)** |
+| `mmd_to_funscript.py` (Blender Add-on) | v5.0.0 | **v5.2.0** |
+| `make_bat.py` (vmd2funscript 옵션 도구) | v5.0.0 (Tkinter GUI, 애드온 자동 연동) | **v5.2.0 (애드온 옵션 변경사항 자동 반영)** |
 
 자세한 변경 이력은 [`CHANGELOG.md`](./CHANGELOG.md)를 확인하세요.
